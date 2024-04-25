@@ -32,12 +32,9 @@ function SwapButton({ tokenIn, tokenOut, amount, fee, recipient }: { tokenIn: To
     const refetchAllowance = useCallback(() => fetchAllowance(tokenIn, recipient).then(setAllowance), [tokenIn, recipient]);
     const refetchBalance = useCallback(() => fetchBalance(tokenIn, recipient).then(setBalance), [tokenIn, recipient]);
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            refetchAllowance();
-            refetchBalance()
-        }, 500)
-        return () => clearTimeout(timeout);
-    }, [tokenIn, tokenOut, amount, recipient]);
+        refetchAllowance();
+        refetchBalance()
+    }, [tokenIn, recipient]);
 
     if (balance < amount) {
         return <div className="flex flex-col text-center">

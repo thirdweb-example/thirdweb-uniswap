@@ -16,6 +16,7 @@ export default function useQuote({ tokenIn, amount, tokenOut }: { tokenIn?: Toke
 
     useEffect(() => {
         const refreshQuote = async (tokenIn: Token, tokenOut: Token, amount: bigint) => {
+            const loadingTimer = setTimeout(() => setLoading(true), 500); // wait to enter loading state to avoid flashing
             let pools;
             const key = `${tokenIn.address}:${tokenOut.address}`;
             if (poolCache.has(key)) {
@@ -59,6 +60,7 @@ export default function useQuote({ tokenIn, amount, tokenOut }: { tokenIn?: Toke
                 return {}
             }
 
+            clearTimeout(loadingTimer);
             return {
                 expectedOutput,
                 fee: pools[bestPoolIdx].poolFee ?? BigInt(0)
@@ -68,7 +70,6 @@ export default function useQuote({ tokenIn, amount, tokenOut }: { tokenIn?: Toke
 
         const delayExecId = setTimeout(() => {
             if (tokenIn && tokenOut && amount) {
-                setLoading(true);
                 refreshQuote(tokenIn, tokenOut, amount).then(({ expectedOutput, fee: bestFee }) => {
                     setFee(bestFee);
                     setOutputAmount(expectedOutput);
