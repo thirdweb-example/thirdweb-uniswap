@@ -45,7 +45,7 @@ export default function useQuote({ tokenIn, amount, tokenOut }: { tokenIn?: Toke
 
                 try {
                     // if the simulation takes longer than 5 seconds, it's almost guaranteed to fail
-                    return await withTimeout(async () => await simulateTransaction({ transaction: quoteTx }), 10000);
+                    return await simulateTransaction({ transaction: quoteTx });
                 } catch (e) {
 
                 }
